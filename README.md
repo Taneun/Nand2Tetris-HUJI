@@ -1,1 +1,2 @@
 # Nand2Tetris-HUJI
+Nand2Tetris Full Course Projects – HUJI Edition | This repository contains a complete implementation of the Nand2Tetris course, covering all 12 projects from building logic gates with NAND to developing a full operating system. Includes HDL circuits, CPU, assembler, VM translator, and Jack compiler. Perfect for students and self-learners looking for a hands-on approach to computer architecture, inspired by the official Nand2Tetris course at Hebrew University.
