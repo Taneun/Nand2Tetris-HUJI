@@ -1,0 +1,23 @@
+function Main.main 0
+call Main.func 0
+push constant 0
+return
+function Main.func 1
+push constant 16384
+shiftleft
+pop temp 0
+push constant 16384
+shiftleft
+shiftleft
+pop temp 1
+push constant 16384
+push constant 2
+call Math.multiply 2
+pop temp 2
+push constant 16384
+push constant 2
+call Math.multiply 2
+push constant 2
+call Math.multiply 2
+pop temp 3
+return
