@@ -80,7 +80,7 @@ D;JGE
 //check if pixel legit
 @24576
 D=A
-@nigga
+@BLACK
 D=M-D
 @LOOP
 D;JGE
