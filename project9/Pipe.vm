@@ -1,0 +1,201 @@
+function Pipe.new 0
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push constant 30
+pop this 3
+push this 3
+push constant 2
+call Math.divide 2
+pop this 2
+push constant 17
+pop this 4
+push constant 239
+pop this 5
+push pointer 0
+return
+function Pipe.draw 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 4
+push this 0
+push this 3
+add
+push this 4
+push constant 80
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 80
+push this 1
+add
+push this 0
+push this 3
+add
+push this 5
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Pipe.updatePipe 1
+push argument 0
+pop pointer 0
+push this 0
+push this 3
+push constant 2
+call Math.divide 2
+add
+pop local 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push local 0
+push this 4
+push this 0
+push this 3
+add
+push this 4
+push constant 80
+add
+call Screen.drawRectangle 4
+pop temp 0
+push local 0
+push constant 80
+push this 1
+add
+push this 0
+push this 3
+add
+push this 5
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push this 2
+sub
+pop this 0
+push this 0
+push this 3
+push constant 2
+call Math.divide 2
+add
+pop local 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 4
+push local 0
+push this 4
+push constant 80
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 80
+push this 1
+add
+push local 0
+push this 5
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Pipe.removePipe 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 4
+push this 0
+push this 3
+add
+push this 4
+push constant 80
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 80
+push this 1
+add
+push this 0
+push this 3
+add
+push this 5
+call Screen.drawRectangle 4
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Pipe.isOffScreen 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 10
+lt
+return
+function Pipe.hasCollided 1
+push argument 0
+pop pointer 0
+push argument 1
+call Bird.getX 1
+push argument 1
+call Bird.getSize 1
+add
+pop local 0
+push this 0
+push this 3
+sub
+push local 0
+lt
+push local 0
+push this 0
+push this 3
+add
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+call Bird.getY 1
+push constant 80
+push argument 1
+call Bird.getSize 1
+add
+lt
+push argument 1
+call Bird.getY 1
+push constant 80
+push this 1
+add
+push argument 1
+call Bird.getSize 1
+sub
+gt
+or
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+label IF_FALSE0
+push constant 0
+return

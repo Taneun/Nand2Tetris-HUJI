@@ -1,0 +1,166 @@
+class FloppyBird {
+    field Bird bird;
+    field Pipe leftPipe;
+    field Pipe rightPipe;
+    field int score;
+    field boolean isRunning;
+    field Array messageArray;
+
+    /**
+     * Initializes a new FloppyBird game instance, creating a bird and pipes.
+     * Sets initial score and running status, and draws the initial environment.
+     */
+    constructor FloppyBird new() {
+        let bird = Bird.new();
+        let leftPipe = Pipe.new(270, 80);
+        let rightPipe = Pipe.new(470, 70);
+        let score = 0;
+        let isRunning = true;
+
+        let messageArray = Array.new(4);
+        let messageArray[0] = "OH NO! YOU CRASHED!";
+        let messageArray[1] = "GAME OVER!";
+        let messageArray[2] = "SCORE: ";
+        let messageArray[3] = "Hold ENTER to play again";
+
+        do draw();
+        return this;
+    }
+
+    /**
+     * Draws the game environment, including the bird, pipes, and boundaries.
+     */
+    method void draw() {
+        do drawTopAndBottom();
+        do bird.draw();
+        do leftPipe.draw();
+        do rightPipe.draw();
+        return;
+    }
+
+    /**
+     * Draws the top and bottom boundaries of the game environment.
+     */
+    method void drawTopAndBottom() {
+        var int start, end, thickness;
+        let start = 0;
+        let end = 511;
+        let thickness = 3;
+        do Screen.drawRectangle(start, 13, end, 13+thickness);
+        do Screen.drawRectangle(start, 240, end, 240+thickness);
+        return;
+    }
+
+    /**
+     * Generates a random gap size for the pipes based on the bird's Y position.
+     * @param birdY The Y position of the bird.
+     * @return The size of the gap between the pipes.
+     */
+    method int generateRandomGap(int birdY) {
+        var int baseValue, offset, gapSize;
+
+        // Ensure birdY is positive and use it as a seed
+        let baseValue = Math.abs(birdY);
+
+        // Calculate a pseudo-modulus using subtraction and division
+        if ((baseValue / 2) * 2 = baseValue) {
+            // If even, generate offset in the lower half range [0, 30]
+            let offset = baseValue - ((baseValue / 31) * 31); // Mimics baseValue % 31
+            let gapSize = 40 + offset;
+        } else {
+            // If odd, generate offset in the upper half range [31, 60]
+            let offset = 31 + (baseValue - ((baseValue / 30) * 30)); // Mimics baseValue % 30
+            let gapSize = 40 + offset;
+        }
+        return gapSize;
+    }
+
+    /**
+     * Checks for collisions between the bird and the pipes or boundaries.
+     * @return True if a collision has occurred, false otherwise.
+     */
+    method boolean checkCollisions() {
+        if (bird.isOutOfBounds()) {
+            return true;
+        }
+        if (leftPipe.hasCollided(bird) | rightPipe.hasCollided(bird)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Displays the current score on the screen.
+     */
+    method void displayScore() {
+        do Output.moveCursor(0,0);
+        do Output.printString(" Score: ");
+        do Output.printInt(score);
+        return;
+    }
+
+    /**
+     * Updates the game state, including the bird, pipes, and score.
+     */
+    method void update() {
+        var int seed;
+        var int randGapSize;
+
+        do displayScore();
+        do bird.erase();
+        do bird.update();
+        do bird.draw();
+
+        if (leftPipe.isOffScreen()) {
+            let seed = bird.getY();
+            let randGapSize = generateRandomGap(seed);
+            do leftPipe.removePipe();
+            let leftPipe = rightPipe;
+            let rightPipe = Pipe.new(470, randGapSize);
+            let score = score + 1;
+        }
+
+        do leftPipe.updatePipe();
+        do rightPipe.updatePipe();
+        return;
+    }
+
+    /**
+     * Resets the game state, displaying a game over message and final score.
+     */
+    method void reset() {
+        var int i;
+        do Screen.clearScreen();
+        let i = 0;
+        while (i < 4) {
+            do Output.moveCursor((8+(2*i)),12);
+            do Output.printString(messageArray[i]);
+            if (i = 2) {
+                do Output.printInt(score);
+            }
+            do Sys.wait(500);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /**
+     * Runs the game loop, handling user input, updating the game state, and checking for collisions.
+     */
+    method void run() {
+        var int collision;
+        let collision = 0;
+        while (isRunning) {
+            if (Keyboard.keyPressed()) {
+                do bird.flap();
+                }
+                do update();
+                let collision = checkCollisions();
+                if (collision) {
+                    let isRunning = false;
+                }
+        }
+        do reset();
+        return;
+    }
+}

@@ -1,0 +1,86 @@
+class Pipe {
+    field int x, gapSize, speed, width, topY, botY;
+
+    /**
+     * Constructor for the Pipe class. Initializes the pipe's position, gap size,
+     * width, speed, and top and bottom boundaries.
+     */
+    constructor Pipe new(int posX, int gap) {
+        let x = posX;
+        let gapSize = gap;
+        let width = 30;
+        let speed = width/2;
+        let topY = 17;
+        let botY = 239;
+        return this;
+    }
+
+    /**
+     * Draws the pipe on the screen, consisting of a top pipe and a bottom pipe
+     * with a gap in between.
+     */
+    method void draw() {
+        do Screen.setColor(true);
+        // Draw the top pipe
+        do Screen.drawRectangle(x, topY, x + width, topY+80);
+        // Draw the bottom pipe
+        do Screen.drawRectangle(x, 80 + gapSize, x + width, botY);
+        return;
+    }
+
+    /**
+     * Updates the pipe's position by moving it to the left and redrawing the pipe.
+     */
+    method void updatePipe() {
+        // Delete the right half of the pipe
+        var int halfWidthX;
+        let halfWidthX = x + (width/2);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(halfWidthX, topY, x + width, topY+80);
+        do Screen.drawRectangle(halfWidthX, 80 + gapSize, x + width, botY);
+        // Move the pipe position left
+        let x = x - speed;
+        let halfWidthX = x + (width/2);
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, topY, halfWidthX, topY+80);
+        do Screen.drawRectangle(x, 80 + gapSize, halfWidthX, botY);
+        return;
+    }
+
+    /**
+     * Removes the pipe from the screen and frees the memory.
+     */
+    method void removePipe() {
+        do Screen.setColor(false);
+        // Delete the top pipe
+        do Screen.drawRectangle(x, topY, x + width, topY+80);
+        // Delete the bottom pipe
+        do Screen.drawRectangle(x, 80 + gapSize, x + width, botY);
+        // Free the memory
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /**
+     * Returns whether the x-coordinate of the pipe is off screen.
+     */
+    method boolean isOffScreen() {
+        return x < 10;
+    }
+
+    /**
+     * Returns whether the bird has collided with the pipe.
+     */
+    method boolean hasCollided(Bird bird) {
+        var int birdHitBox;
+        let birdHitBox = bird.getX() + bird.getSize();
+        if (((x - width) < birdHitBox) & (birdHitBox < (x + width))) {
+            if ((bird.getY() < (80+bird.getSize())) |
+            (bird.getY() > (80 + gapSize-bird.getSize()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+}

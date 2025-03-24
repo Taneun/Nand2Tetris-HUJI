@@ -1,0 +1,85 @@
+class Bird {
+    field int x, y, velocity, gravity, size, memAddress;
+
+    /** Initializes a new bird object with the given x and y coordinates. */
+    constructor Bird new() {
+        let x = 2;
+        let y = 128;
+        let velocity = 0;
+        let gravity = 2;
+        let size = 16;
+        let memAddress = 16384+x+(y*32);
+        return this;
+    }
+
+    /** Initializes a new bird object with the given x and y coordinates. */
+    method void flap() {
+        let velocity = -10;
+        return;
+    }
+
+    /** Updates the bird's position based on its velocity and gravity. */
+    method void update() {
+        let velocity = velocity + gravity;
+        let y = Math.min((y + velocity), 228);
+        return;
+    }
+
+    /** Draws the bird on the screen. */
+    method void draw() {
+        let memAddress = 16384+x+(y*32);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 4064);
+        do Memory.poke(memAddress+64, 4624);
+        do Memory.poke(memAddress+96, 10508);
+        do Memory.poke(memAddress+128, 10500);
+        do Memory.poke(memAddress+160, 8767);
+        do Memory.poke(memAddress+192, 31809);
+        do Memory.poke(memAddress+224, -32191);
+        do Memory.poke(memAddress+256, 32063);
+        do Memory.poke(memAddress+288, 16898);
+        do Memory.poke(memAddress+320, 15372);
+        do Memory.poke(memAddress+352, 1008);
+        return;
+    }
+
+    /** Erases the bird from the screen. */
+    method void erase() {
+        let memAddress = 16384+x+(y*32);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 0);
+        do Memory.poke(memAddress+96, 0);
+        do Memory.poke(memAddress+128, 0);
+        do Memory.poke(memAddress+160, 0);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        return;
+    }
+
+    /** Checks if the bird is out of bounds. */
+    method boolean isOutOfBounds() {
+        return (y < 5) | (y > 225);
+    }
+
+    /** Returns the bird's y coordinate. */
+    method int getY() {
+        return y;
+    }
+
+    /** Returns the bird's x coordinate. */
+    method int getX() {
+        return x;
+    }
+
+    /** Returns the bird's size. */
+    method int getSize() {
+        return size;
+    }
+
+
+}

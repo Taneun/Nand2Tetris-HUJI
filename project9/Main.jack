@@ -1,0 +1,33 @@
+// This file is part of nand2tetris, as taught in The Hebrew University, and
+// was written by Aviv Yaish. It is an extension to the specifications given
+// [here](https://www.nand2tetris.org) (Shimon Schocken and Noam Nisan, 2017),
+// as allowed by the Creative Common Attribution-NonCommercial-ShareAlike 3.0
+// Unported [License](https://creativecommons.org/licenses/by-nc-sa/3.0/).
+
+class Main {
+    /**
+     * The main entry point of the program. Initializes and runs the FloppyBird game.
+     * Waits for the user to press Enter to start or play again after a game over.
+     */
+    function void main() {
+        var FloppyBird game;
+        var int firstKey;
+        var char playAgainKey;
+        let game = FloppyBird.new();
+        while (true) {
+            let firstKey = Keyboard.keyPressed();
+            if (firstKey = 128){
+                do game.run();
+            }
+            let playAgainKey = Keyboard.keyPressed();
+            if (playAgainKey = 128){
+                do Screen.clearScreen();
+                let game = FloppyBird.new();
+            }
+            if (playAgainKey = 140) {
+                do Sys.halt();
+            }
+        }
+        return;
+    }
+}
