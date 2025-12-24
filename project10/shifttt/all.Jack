@@ -1,0 +1,39 @@
+//* Complex /* nested */ multi-line comment */
+/* complex // inline/ */
+/* abcdefghijklmnopqrstuvwxyz
+// inline
+abcdefghijklmnopqrstuvwxyz */
+
+class all {
+    // This string contains all the characters in order
+    field String charSet;
+
+    // Method to get the string
+    method String getCharSet() {
+        return charSet;
+    }
+
+    /** Returns the product of x and y. */
+    function int multiply(int x, int y) {
+      var int sum, shifted, j, nx, ny;
+
+      let nx = Math.abs(x);
+      let ny = Math.abs(y);
+      let shifted = nx;
+      while (j < 16) {
+        if (Math.bit(ny, j)) {
+          let sum = sum + shifted;
+        }
+
+        let shifted = ^shifted;
+        let shifted = #shifted;
+        let shifted = ^shifted;
+        let j = j + 1;
+      }
+
+      if ((x < 0 & y > 0) | (x > 0 & y < 0)) {
+        let sum = -sum;
+      }
+      return sum;
+    }
+}
